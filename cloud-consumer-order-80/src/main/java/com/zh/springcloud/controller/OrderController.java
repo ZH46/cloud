@@ -19,19 +19,20 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class OrderController {
 
-    private final String ORDER_URL = "http://localhost:8001";
+    //    private final String ORDER_URL = "http://localhost:8001";
+    private final String ORDER_URL = "http://CLOUD-PAYMENT-SERVICE";
 
     @Autowired
     private RestTemplate restTemplate;
 
     @GetMapping("/payment/create")
-    public CommonResult<Payment> create(Payment payment){
-        return restTemplate.postForObject(ORDER_URL+"/payment/save",payment,CommonResult.class);
+    public CommonResult<Payment> create(Payment payment) {
+        return restTemplate.postForObject(ORDER_URL + "/payment/save", payment, CommonResult.class);
     }
 
     @GetMapping("/payment/get/{id}")
-    public CommonResult<Payment> getPayment(@PathVariable("id") Long id){
-        return restTemplate.getForObject(ORDER_URL+"/payment/get/"+id,CommonResult.class);
+    public CommonResult<Payment> getPayment(@PathVariable("id") Long id) {
+        return restTemplate.getForObject(ORDER_URL + "/payment/get/" + id, CommonResult.class);
     }
 
 }
