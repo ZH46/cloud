@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 自定义负载均衡算法
+ * 自定义 Ribbon 手写轮询算法
  *
  * @author 卓少武
  * @date 2020/10/13
  */
 @Component
-public class MyLB implements LoadBalanced {
+public class MyLB implements ILoadBalanced {
 
     private final AtomicInteger atomicInteger = new AtomicInteger(0);
 

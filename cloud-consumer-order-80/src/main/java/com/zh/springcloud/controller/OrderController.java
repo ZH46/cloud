@@ -2,7 +2,7 @@ package com.zh.springcloud.controller;
 
 import com.zh.springcloud.entities.CommonResult;
 import com.zh.springcloud.entities.Payment;
-import com.zh.springcloud.lb.LoadBalanced;
+import com.zh.springcloud.lb.ILoadBalanced;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -26,10 +26,14 @@ import java.util.List;
 public class OrderController {
 
     //    private final String ORDER_URL = "http://localhost:8001";
+
     private final String ORDER_URL = "http://CLOUD-PAYMENT-SERVICE";
 
+    /**
+     * 自定义负载均衡规则
+     */
     @Autowired
-    private LoadBalanced loadBalanced;
+    private ILoadBalanced loadBalanced;
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -59,6 +63,11 @@ public class OrderController {
 
     }
 
+    /**
+     * 路由规则: 轮询
+     *
+     * @return
+     */
     @GetMapping("/payment/lb")
     public String getLB(){
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
@@ -70,6 +79,16 @@ public class OrderController {
         ServiceInstance instance = loadBalanced.instances(instances);
 
         return restTemplate.getForObject(instance.getUri()+"/payment/lb",String.class);
+    }
+
+    /**
+     * 链路跟踪 zipkin+sleuth
+     *
+     * @return
+     */
+    @GetMapping("/payment/zipkin")
+    public String paymentZipkin() {
+        return restTemplate.getForObject(ORDER_URL+"/payment/zipkin/", String.class);
     }
 
 }

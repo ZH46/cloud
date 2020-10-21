@@ -8,7 +8,7 @@ import java.util.List;
  * @author 卓少武
  * @date 2020/10/13
  */
-public interface LoadBalanced {
+public interface ILoadBalanced {
     /**
      * 获取存活的服务实例列表
      *
